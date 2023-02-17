@@ -1,10 +1,8 @@
 package com.example.mypyxabayapp202301
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -25,15 +23,14 @@ class DetailActivity : AppCompatActivity() {
     var tvDown: TextView ?= null
     var llayout: LinearLayout ?= null
 
-
+    var tagList : MutableList<String> = ArrayList()
 
     fun tagsSplitting(string: String){
 
         var arrayOfTags = string.split(", ")
-        var list: MutableList<String> = ArrayList()
         var i = 0;
         for(tag in arrayOfTags){
-            list[i] = tag
+            tagList[i] = tag
             i ++
         }
 
@@ -75,6 +72,8 @@ class DetailActivity : AppCompatActivity() {
         var downloads: String?= i.getStringExtra(EXTRA_DOWNLOADS)
         var views: String? = i.getStringExtra(EXTRA_VIEWS)
         var tags: String? = i.getStringExtra(EXTRA_TAGS)
+
+        //TODO : create buttons en fonction du nombre de tags présents
 
         tvCreator!!.text = "By $author"
         tvLikes!!.text = "$likes personnes ont liké le post 🥰"
