@@ -33,10 +33,14 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
     private var btn_search: FloatingActionButton ?= null
 
     private var spin_types: Spinner?= null
+    var isStart: Boolean ?= true
+
+
 
     /** Configurates the spinner **/
+    //This spinner precises wht kind of image you want in the UI
     fun Spinner(){
-        spin_types = findViewById(R.id.spinner_types)
+        spin_types = findViewById(R.id.spinner_types) //We base the spinner on the array present in R.values.strings.xml
         var adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.spinner_array, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         itemArrayList = ArrayList()
         requestQueue = Volley.newRequestQueue(this)
 
-        //add spinner
+        //add spinner link
         Spinner()
     }
 
@@ -110,10 +114,10 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         requestQueue!!.add(request)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         init()
 
@@ -122,8 +126,18 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
             parseJSON()
         }
 
+    }
 
+    override fun onResume() {
+        super.onResume()
 
+        var i: Intent = intent
+        et_search!!.setText(i.getStringExtra(EXTRA_SEARCH))
+
+        btn_search!!.setOnClickListener{
+            itemArrayList!!.clear()
+            parseJSON()
+        }
     }
 
     override fun onItemClick(position: Int) {

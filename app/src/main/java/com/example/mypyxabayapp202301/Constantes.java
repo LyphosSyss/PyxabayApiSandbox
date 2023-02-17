@@ -9,4 +9,8 @@ public interface Constantes {
     String EXTRA_DOWNLOADS = "type";
 
     String EXTRA_TAGS = "tags";
+
+    String EXTRA_SEARCH = "search";
+
+    String EXTRA_ISSTART = "bool";
 }

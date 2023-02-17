@@ -9,17 +9,17 @@
         android:layout_margin="4dp">
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp" android:id="@+id/linearLayout" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                    android:layout_width="270dp"
-                    android:layout_height="50dp"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:id="@+id/eT_search"
-                    android:layout_weight="1"/>
+        <EditText
+                android:layout_width="270dp"
+                android:layout_height="50dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/eT_search"
+                android:layout_weight="1"/>
         <Spinner
                 android:layout_width="106dp"
                 android:layout_height="36dp"
