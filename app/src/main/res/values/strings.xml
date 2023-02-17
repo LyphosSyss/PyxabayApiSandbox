@@ -9,4 +9,12 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="spinnerstr">Select type</string>
+    <string-array name="spinner_array">
+        <item>All</item>
+        <item>Photo</item>
+        <item>Illustration</item>
+        <item>Vector</item>
+    </string-array>
 </resources>

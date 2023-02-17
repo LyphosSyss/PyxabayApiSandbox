@@ -23,7 +23,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="0dp" app:layout_constraintTop_toBottomOf="@+id/iV_picture">
+                tools:layout_editor_absoluteX="0dp" app:layout_constraintTop_toBottomOf="@+id/iV_picture"
+                android:id="@+id/lL_CardInfos">
             <TextView
                     android:text="TextView"
                     android:layout_width="wrap_content"
