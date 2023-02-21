@@ -1,20 +1,18 @@
 package com.example.mypyxabayapp202301
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Spinner
-import androidx.annotation.Nullable
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.recyclerview.widget.SnapHelper
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
 
     /** Configurates the spinner **/
     //This spinner precises wht kind of image you want in the UI
-    fun Spinner(){
+    fun spinnerSettings(){
         spin_types = findViewById(R.id.spinner_types) //We base the spinner on the array present in R.values.strings.xml
         var adapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.spinner_array, android.R.layout.simple_spinner_item)
@@ -53,20 +51,25 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         spin_types!!.adapter = adapter
     }
 
+    @SuppressLint("ResourceAsColor")
+    fun progressBarSettings(){
+        pbar_progress = findViewById(R.id.pB_progress)
+
+    }
     fun init() {
         //Design Java link
         recyclerView = findViewById(R.id.rV_itemsList)
         et_search = findViewById(R.id.eT_search)
         btn_search = findViewById(R.id.fAB_search)
-        pbar_progress = findViewById(R.id.pB_progress)
 
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager = LinearLayoutManager(this)
         itemArrayList = ArrayList()
         requestQueue = Volley.newRequestQueue(this)
 
-        //add spinner link
-        Spinner()
+        //add other elements
+        spinnerSettings()
+        progressBarSettings()
     }
 
     private fun parseJSON() {
@@ -133,7 +136,6 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
             itemArrayList!!.clear()
             parseJSON()
         }
-
         recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

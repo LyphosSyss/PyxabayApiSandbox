@@ -24,6 +24,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.mViewH
 
     private int itemPos;
 
+
     public AdapterRecycler(Context context, ArrayList<ModelItem> itemArrList) {
         this.context = context;
         this.itemArrList = itemArrList;
