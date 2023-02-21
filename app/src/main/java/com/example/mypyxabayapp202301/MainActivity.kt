@@ -4,11 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Spinner
+import androidx.annotation.Nullable
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.recyclerview.widget.SnapHelper
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
     private var btn_search: FloatingActionButton ?= null
 
     private var spin_types: Spinner?= null
-    var isStart: Boolean ?= true
+    private var pbar_progress: ProgressBar ?= null
 
 
 
@@ -52,6 +58,8 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         recyclerView = findViewById(R.id.rV_itemsList)
         et_search = findViewById(R.id.eT_search)
         btn_search = findViewById(R.id.fAB_search)
+        pbar_progress = findViewById(R.id.pB_progress)
+
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager = LinearLayoutManager(this)
         itemArrayList = ArrayList()
@@ -103,6 +111,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
 
                     // Puis on lie l'adpter au Recycler
                     recyclerView!!.adapter = adapterRecycler
+
                     /** #10.3 On peut alors ajouter le listener  */
                     adapterRecycler!!.setMOnItemClickListener(this@MainActivity)
 
@@ -118,7 +127,6 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         init()
 
         btn_search!!.setOnClickListener{
@@ -126,6 +134,13 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
             parseJSON()
         }
 
+        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                pbar_progress!!.progress = adapterRecycler!!.itemPos
+            }
+        })
     }
 
     override fun onResume() {
@@ -141,7 +156,6 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
     }
 
     override fun onItemClick(position: Int) {
-        //Toast.makeText(this, "T'as cliqué sur l'image " + (position + 1), Toast.LENGTH_SHORT).show()
         Log.i("TAG", "onItemClick: ")
         val inte: Intent = object :
             Intent(
@@ -159,4 +173,6 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         startActivity(inte)
 
     }
+
+
 }

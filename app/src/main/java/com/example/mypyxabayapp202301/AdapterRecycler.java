@@ -1,10 +1,12 @@
 package com.example.mypyxabayapp202301;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,8 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.mViewH
 
     private Context context;
     private ArrayList<ModelItem> itemArrList;
+
+    int itemPos;
 
     public AdapterRecycler(Context context, ArrayList<ModelItem> itemArrList) {
         this.context = context;
@@ -60,6 +64,9 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.mViewH
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.ivImageView);
+        Log.i("BVH", "onBindViewHolder: " + position + "item position");
+        itemPos = position + 1;
+
     }
 
     @Override
@@ -90,11 +97,17 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.mViewH
         }
     }
 
+
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
 
+    public int getItemPos() {
+        return itemPos;
+    }
+
     private static OnItemClickListener mOnItemClickListener;
+
 
     public void setMOnItemClickListener(OnItemClickListener onItemClickListener){
         mOnItemClickListener = onItemClickListener;

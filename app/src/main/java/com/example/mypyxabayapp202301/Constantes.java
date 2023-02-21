@@ -12,5 +12,4 @@ public interface Constantes {
 
     String EXTRA_SEARCH = "search";
 
-    String EXTRA_ISSTART = "bool";
 }
