@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.Spinner
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -33,13 +35,15 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
     private var image_typeSearch: String? = null
     private var image_orientationSearch: String? = null
 
+    private var lv_history: ListView ?= null
     private var et_search: EditText ?= null
     private var btn_search: FloatingActionButton ?= null
+    private var btn_history: FloatingActionButton ?= null
 
     private var spin_types: Spinner?= null
     private var pbar_progress: ProgressBar ?= null
 
-
+    var listSearched : ArrayList<String> = ArrayList()
 
     /** Configurates the spinner **/
     //This spinner precises wht kind of image you want in the UI
@@ -49,6 +53,12 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
             this, R.array.spinner_array, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         spin_types!!.adapter = adapter
+    }
+
+    fun listviewSettings(){
+        lv_history = findViewById(R.id.lV_History)
+        var adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSearched)
+        lv_history!!.adapter = adapter
     }
 
     @SuppressLint("ResourceAsColor")
@@ -61,6 +71,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         recyclerView = findViewById(R.id.rV_itemsList)
         et_search = findViewById(R.id.eT_search)
         btn_search = findViewById(R.id.fAB_search)
+        btn_history = findViewById(R.id.fAB_history)
 
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager = LinearLayoutManager(this)
@@ -70,6 +81,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         //add other elements
         spinnerSettings()
         progressBarSettings()
+        listviewSettings()
     }
 
     private fun parseJSON() {
@@ -135,7 +147,18 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         btn_search!!.setOnClickListener{
             itemArrayList!!.clear()
             parseJSON()
+            listSearched.add(et_search!!.text.toString().uppercase())
         }
+
+        btn_history!!.setOnClickListener{
+            if(lv_history!!.isVisible == true){
+                lv_history!!.isVisible = false
+            }else{
+                lv_history!!.isVisible = true
+            }
+
+        }
+
         recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -147,14 +170,9 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
 
     override fun onResume() {
         super.onResume()
-
         var i: Intent = intent
         et_search!!.setText(i.getStringExtra(EXTRA_SEARCH))
 
-        btn_search!!.setOnClickListener{
-            itemArrayList!!.clear()
-            parseJSON()
-        }
     }
 
     override fun onItemClick(position: Int) {

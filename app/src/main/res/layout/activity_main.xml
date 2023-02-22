@@ -57,9 +57,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true" app:srcCompat="@drawable/baseline_history_24"
-            android:id="@+id/_history"
+            android:id="@+id/fAB_history"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.046"
             app:layout_constraintVertical_bias="0.976"/>
+    <ListView
+            android:layout_width="313dp"
+            android:layout_height="59dp"
+            app:layout_constraintBottom_toTopOf="@+id/fAB_history" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.094" app:layout_constraintVertical_bias="1.0"
+            android:id="@+id/lV_History" android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
