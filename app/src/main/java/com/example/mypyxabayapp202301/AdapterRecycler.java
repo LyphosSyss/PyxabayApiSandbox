@@ -54,10 +54,6 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.mViewH
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)
                         .placeholder(R.mipmap.ic_launcher_round);
-        /**Context context = holder.ivImageView.getContext(); //if error
-        Glide.with(context)
-                .load(imageUrl)
-                .into(context);**/
 
         Glide.with(holder.ivImageView)
                 .load(imageUrl)

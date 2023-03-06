@@ -1,8 +1,11 @@
 package com.example.mypyxabayapp202301
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -12,15 +15,21 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.viewpager2.widget.ViewPager2.Orientation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mypyxabayapp202301.Constantes.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailActivity : AppCompatActivity() {
     /** variables declaration **/
     //layout items
+    var fab_notifs: FloatingActionButton ?= null
     var imageView: ImageView ?= null
     var tvCreator: TextView ?= null
     var tvLikes: TextView ?= null
@@ -37,6 +46,7 @@ class DetailActivity : AppCompatActivity() {
         tvCreator = findViewById(R.id.tV_authorName)
         tvLikes = findViewById(R.id.tV_likes)
         llayout = findViewById(R.id.lL_CardInfos)
+        fab_notifs = findViewById(R.id.fAB_notif)
 
         //create some items to be put in the layout
         tvViews = object : androidx.appcompat.widget.AppCompatTextView(this@DetailActivity){}
@@ -61,7 +71,7 @@ class DetailActivity : AppCompatActivity() {
         llayoutH!!.gravity = Gravity.CENTER
 
         for (string in strings){ //for each item found in the array we :
-            val btnTag = object : androidx.appcompat.widget.AppCompatButton(this@DetailActivity){}//1 : create a Button object
+            val btnTag = object : androidx.appcompat.widget.AppCompatButton(this@DetailActivity){}//1 : create a Button object : it will be our TAGs containers
             llayoutH!!.addView(btnTag) //2 : add it in our layout
             btnTag.gravity = Gravity.CENTER //3: set it into the center
             btnTag.text = string //4: set our item text value
@@ -89,21 +99,24 @@ class DetailActivity : AppCompatActivity() {
         var views: String? = i.getStringExtra(EXTRA_VIEWS)
         var tagsFromJson: String? = i.getStringExtra(EXTRA_TAGS)
 
-        //other vaariables
-        var index = 0
+        //tagsSplitting
         var tags = tagsFromJson!!.split(", ")
 
         //graph compos
         initUI()
         initUITags(tags)
 
-        //TODO : create buttons en fonction du nombre de tags présents
-
         tvCreator!!.text = "By $author"
         tvLikes!!.text = "$likes personnes ont liké le post 🥰"
         tvViews!!.text = "Il y a eu $views personnes qui ont vu cette image 👀"
         tvDown!!.text = "Cette image a été téléchargée $downloads fois 💚"
 
+        //notifications
+            //--⬇-- Notification on an event --⬇--
+        fab_notifs!!.setOnClickListener{
+            showNotification("OnEvent Notification", "You got notified by clicking on $author's picture")
+        }
+        //--⬇-- Notification as a reminder --⬇--
 
 
         //manages images display / load errors
@@ -118,5 +131,46 @@ class DetailActivity : AppCompatActivity() {
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView!!)
 
+
     }
+
+    private companion object{
+        //notification identity in case there's more than one notification
+        private const val CHANNEL_ID = "channel01"
+      }
+
+    private fun createNotifChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name: CharSequence = "My notification"
+            val desc = "My notification channel desc"
+
+            val importance =  NotificationManager.IMPORTANCE_DEFAULT
+            val notificationChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as  NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+            notificationChannel.description = desc
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun showNotification(title: String, content: String){
+        createNotifChannel()
+
+        //let's set the identification of the notification
+        val date = Date()
+        val  notifID = SimpleDateFormat("ddHHmmss", Locale.FRANCE).format(date).toInt()
+        //creation of a notif builder
+        val notifBuilder = NotificationCompat.Builder(this, "$CHANNEL_ID")
+        notifBuilder.setSmallIcon(R.drawable.ic_notification_add) //-> Sets the notif's icon
+        notifBuilder.setContentTitle("$title") //-> Sets the notif's title
+        notifBuilder.setContentText("$content") //-> Sets the notif's content
+        notifBuilder.priority = NotificationCompat.PRIORITY_DEFAULT //-> Sets the notif's priority
+
+        val notifManagerCompat = NotificationManagerCompat.from(this)
+        notifManagerCompat.notify(notifID, notifBuilder.build())
+    }
+
+
+
+
 }

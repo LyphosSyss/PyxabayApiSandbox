@@ -2,8 +2,7 @@ package com.example.mypyxabayapp202301
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -151,11 +150,7 @@ class MainActivity : AppCompatActivity(), AdapterRecycler.OnItemClickListener{
         }
 
         btn_history!!.setOnClickListener{
-            if(lv_history!!.isVisible == true){
-                lv_history!!.isVisible = false
-            }else{
-                lv_history!!.isVisible = true
-            }
+            lv_history!!.isVisible = lv_history!!.isVisible != true
 
         }
 
